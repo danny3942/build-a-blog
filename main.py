@@ -28,7 +28,7 @@ def index():
 
     if request.method == 'POST':
         title = request.form['title']
-        body = request.form['poop']
+        body = str(request.form['poop'])
         new_blog = Blog(title , body)
         db.session.add(new_blog)
         db.session.commit()
@@ -48,7 +48,7 @@ def blogpage():
 
     if request.method == 'POST':
         title = request.form['title']
-        body = request.form['poop']
+        body = str(request.form['poop'])
         new_blog = Blog(title , body)
         db.session.add(new_blog)
         db.session.commit()
@@ -66,12 +66,16 @@ def blogpost():
 
 @app.route('/newpost' , methods=['POST' , 'GET'])
 def newpost():
-    name = request.form['title']
-    body = request.form['poop']
-    entry = Blog(name , body)
-    db.session.add(entry)
-    db.session.commit()
-    return redirect('/blog')
+    if request.method=='POST':    
+        name = request.form['title']
+        body = str(request.form['poop'])
+        entry = Blog(name , body)
+        db.session.add(entry)
+        db.session.commit()
+        blog = Blog.query.filter_by(id=entry.id).first()
+        return render_template('blogpage.html' , blog=blog)
+    else:
+        return render_template('blog.html')
 
 
 if __name__ == '__main__':
