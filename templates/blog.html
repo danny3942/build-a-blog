@@ -11,8 +11,10 @@
         <tr>
             <td><label for="poop">Blog Contents:</label></td>
             <td>
-                <textarea rows="5" cols="25" name="poop">
-                </textarea>
+                <textarea name="poop"></textarea>
+                {% if err %}
+                    <i class="error">{{ mssg }}</i>
+                {% endif %}
             </td>
         </tr>
         <tr>

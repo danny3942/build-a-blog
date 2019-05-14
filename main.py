@@ -69,11 +69,14 @@ def newpost():
     if request.method=='POST':    
         name = request.form['title']
         body = str(request.form['poop'])
-        entry = Blog(name , body)
-        db.session.add(entry)
-        db.session.commit()
-        blog = Blog.query.filter_by(id=entry.id).first()
-        return render_template('blogpage.html' , blog=blog)
+        if name != "" and body != "" and not(name is None or body is None):
+            entry = Blog(name , body)
+            db.session.add(entry)
+            db.session.commit()
+            blog = Blog.query.filter_by(id=entry.id).first()
+            return render_template('blogpage.html' , blog=blog)
+        else:
+            return render_template('blog.html' , err=True, mssg="Title and Content cannot be empty!!!")
     else:
         return render_template('blog.html')
 
